@@ -30,7 +30,7 @@ export function SortableResourceBadge({
       {...provided.dragHandleProps}
       style={getInstantDropStyle(provided, snapshot)}
       className={cn(
-        'group relative flex items-center gap-2 px-3 py-2 rounded-lg border bg-card select-none',
+        'group relative flex items-center gap-2 px-3 py-2 rounded-lg border bg-card select-none overflow-hidden',
         'transition-[shadow,border-color,opacity,background-color] duration-200',
         'hover:shadow-sm hover:border-primary/30 hover:bg-accent/50',
         snapshot.isDragging ? 'opacity-90 z-10 cursor-grabbing shadow-lg ring-2 ring-primary/20' : 'cursor-grab',
