@@ -1,0 +1,86 @@
+name: daed-quicpersonal
+
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - personal/stable-quicpersonal
+    paths:
+      - ".github/workflows/daed-quicpersonal.yml"
+      - "package.json"
+      - "pnpm-lock.yaml"
+      - "pnpm-workspace.yaml"
+      - "turbo.json"
+      - "Makefile"
+      - "apps/**"
+      - "wing/**"
+
+permissions:
+  contents: read
+
+concurrency:
+  group: daed-quicpersonal-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  build:
+    name: Build daed with quic-go personal/stable
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+    env:
+      GOOS: linux
+      GOARCH: amd64
+      GOAMD64: v3
+      CGO_ENABLED: 0
+
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          submodules: recursive
+
+      - uses: actions/checkout@v4
+        with:
+          repository: ksong008/quic-go
+          ref: personal/stable
+          path: .deps/quic-go
+          fetch-depth: 1
+
+      - uses: pnpm/action-setup@v5.0.0
+
+      - uses: actions/setup-node@v6
+        with:
+          node-version: latest
+          cache: pnpm
+
+      - uses: actions/setup-go@v6
+        with:
+          go-version: "1.26.2"
+          cache: false
+
+      - name: Override quic-go in wing
+        working-directory: wing
+        run: |
+          go mod edit -replace=github.com/daeuniverse/quic-go=${GITHUB_WORKSPACE}/.deps/quic-go
+          go mod download
+          go list -m github.com/daeuniverse/quic-go
+
+      - name: Build web
+        env:
+          NODE_OPTIONS: --max-old-space-size=4096
+        run: |
+          pnpm install
+          pnpm build --filter daed
+
+      - name: Build bundle
+        env:
+          VERSION: test-${{ github.sha }}
+          GOFLAGS: -trimpath -mod=mod -modcacherw
+          OUTPUT: ../bundled/daed-quicpersonal
+          APPNAME: daed
+          WEB_DIST: ../apps/web/dist
+        working-directory: wing
+        run: make bundle
+
+      - name: Smoke test
+        run: ./bundled/daed-quicpersonal --version
