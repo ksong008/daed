@@ -42,8 +42,7 @@ Local commit:
 - `b96f3325` `Improve VLESS TLS fp and ALPN form handling`
 
 Status:
-- committed locally on `personal/stable`
-- not yet pushed to `origin/personal/stable`
+- committed and pushed on `personal/stable`
 
 Problem background:
 - manually created `VLESS + security=tls` nodes in daed did not expose `fp`
@@ -73,8 +72,7 @@ Validation notes:
 ### 3. Add advanced XHTTP configuration support to the V2Ray form
 
 Status:
-- local working tree changes on `personal/stable`
-- not yet pushed to `origin/personal/stable`
+- committed and pushed on `personal/stable`
 
 Problem background:
 - `outbound` now supports a significantly larger `xhttp` feature set than the existing daed form could express
@@ -146,14 +144,14 @@ Notes:
 At the time of this memo:
 
 - `personal/stable` already contains the latest personal backend submodule alignment
-- `personal/stable` also has local-only UI / parser work for:
+- `personal/stable` also contains shipped UI / parser work for:
   - VLESS TLS `fp` / ALPN handling
   - advanced `xhttp` configuration support
 - `olicesxcore/stable` has already been verified successfully after backend chain synchronization
 
 ## Follow-up candidates
 
-- push the local `personal/stable` daed form improvements if they should be shared
+- verify the pushed `personal/stable` daed form improvements in the UI against real xhttp nodes
 - add stronger automated regression coverage for:
   - advanced `xhttp` extra parsing / round-trip
   - VLESS `tls/reality` xhttp generation
