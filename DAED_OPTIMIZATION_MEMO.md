@@ -70,6 +70,54 @@ Validation notes:
 - repository already contains unrelated pre-existing TypeScript issues outside the modified files
 - no new errors were observed in the touched files themselves during review
 
+### 3. Add advanced XHTTP configuration support to the V2Ray form
+
+Status:
+- local working tree changes on `personal/stable`
+- not yet pushed to `origin/personal/stable`
+
+Problem background:
+- `outbound` now supports a significantly larger `xhttp` feature set than the existing daed form could express
+- the UI already supported basic:
+  - `xhttpMode`
+  - `xhttpExtra`
+- but did not expose most advanced fields needed to preserve or author richer `xhttp` links
+
+What was added:
+- parser / model support for advanced `xhttp` settings:
+  - `xPadding*`
+  - `sessionPlacement / sessionKey`
+  - `seqPlacement / seqKey`
+  - `uplinkHTTPMethod`
+  - `uplinkDataPlacement / uplinkDataKey / uplinkChunkSize`
+  - `scMaxEachPostBytes`
+  - `scMinPostsIntervalMs`
+  - `scMaxBufferedPosts`
+  - `noSSEHeader`
+  - `downloadSettingsRaw`
+  - `xmuxRaw`
+- parser now extracts these values from `extra` JSON when present
+- V2Ray link generation now rebuilds `extra` JSON from structured fields while still using the existing raw `xhttpExtra` as a base
+- the form now exposes an `Advanced XHTTP` section with:
+  - common structured inputs
+  - JSON textareas for `downloadSettings` and `xmux`
+  - raw extra JSON textarea as a fallback
+
+Files:
+- `apps/web/src/components/ConfigureNodeFormModal/V2rayForm.tsx`
+- `apps/web/src/components/ConfigureNodeFormModal/protocols/complex.ts`
+- `apps/web/src/constants/default.ts`
+- `apps/web/src/constants/schema.ts`
+- `packages/dae-node-parser/src/parser.ts`
+- `packages/dae-node-parser/src/types.ts`
+- `packages/dae-node-parser/tests/parser.test.ts`
+
+Validation notes:
+- parser-level tests were updated
+- local `vitest` execution is currently blocked by an existing optional native dependency issue in the repo toolchain (`rolldown` binding)
+- local `tsc` still reports unrelated pre-existing repository errors outside the touched files
+- no new TypeScript errors from the touched files were observed beyond those pre-existing failures
+
 ## olicesxcore/stable line
 
 ### 3. Align daed with olicesxcore backend chain
@@ -98,14 +146,15 @@ Notes:
 At the time of this memo:
 
 - `personal/stable` already contains the latest personal backend submodule alignment
-- `personal/stable` also has one additional local-only web UI fix commit:
-  - `b96f3325`
+- `personal/stable` also has local-only UI / parser work for:
+  - VLESS TLS `fp` / ALPN handling
+  - advanced `xhttp` configuration support
 - `olicesxcore/stable` has already been verified successfully after backend chain synchronization
 
 ## Follow-up candidates
 
-- push `b96f3325` to `origin/personal/stable` if the VLESS TLS form fix should be shared
-- optionally add dedicated UI or parser/generator regression tests for:
-  - `VLESS + security=tls + fp`
-  - `VLESS + security=tls + alpn`
-  - `VLESS + flow=xtls-rprx-vision`
+- push the local `personal/stable` daed form improvements if they should be shared
+- add stronger automated regression coverage for:
+  - advanced `xhttp` extra parsing / round-trip
+  - VLESS `tls/reality` xhttp generation
+  - form serialization of `downloadSettings` and `xmux`
