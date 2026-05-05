@@ -1,5 +1,23 @@
 # Changelog
 
+## [1.21.0](https://github.com/ksong008/daed/compare/dae-editor-v1.20.0...dae-editor-v1.21.0) (2026-05-05)
+
+
+### Features
+
+* add RoutingA language formatter and integrate with Monaco editor ([023cc2b](https://github.com/ksong008/daed/commit/023cc2b131e62a6730dc371b680bc7686f8930eb))
+* **dae-lsp:** add browser LSP support and fix completions ([fdcc2a4](https://github.com/ksong008/daed/commit/fdcc2a435304801dffea530d1690f955dbb40772))
+* re-trigger release-please ([c669866](https://github.com/ksong008/daed/commit/c669866b576a5978ebf38330f9a501a3164799a9))
+* split dae-editor and dae-node-parser into its own package ([2a26602](https://github.com/ksong008/daed/commit/2a2660279fa031f3a13a68ef58d1534007438ff0))
+* trigger release ([a92a199](https://github.com/ksong008/daed/commit/a92a199dfdaba2184f2b4191e17e5005aaa65779))
+* update pnpm workspace and add turbo configuration ([76cebb6](https://github.com/ksong008/daed/commit/76cebb6a1b75dac9bf09e264970f391e8e2bbbb3))
+
+
+### Bug Fixes
+
+* **security:** mitigate polynomial ReDoS in formatter and parser ([ba39004](https://github.com/ksong008/daed/commit/ba39004001d6de2b97c78e2f2ef47cf8e3aa7347))
+* 节点行域名过长时删除按钮被挤出可视区域 ([ff21261](https://github.com/ksong008/daed/commit/ff2126166005ab14ba725f1d79699b950b52b137))
+
 ## [1.20.0](https://github.com/daeuniverse/daed/compare/dae-editor-v1.19.1...dae-editor-v1.20.0) (2026-03-31)
 
 
