@@ -1,5 +1,81 @@
 # Changelog
 
+## [1.27.0](https://github.com/ksong008/daed/compare/v1.26.0...v1.27.0) (2026-05-05)
+
+
+### Features
+
+* add group pickers and amd64v3 test workflow ([df0021d](https://github.com/ksong008/daed/commit/df0021d9bdd59e67cf2131170094f257081fc324))
+* **dae-lsp:** add browser LSP support and fix completions ([fdcc2a4](https://github.com/ksong008/daed/commit/fdcc2a435304801dffea530d1690f955dbb40772))
+* **node:** support ss2022 chacha20 and fix xhttp edit ([ea284a7](https://github.com/ksong008/daed/commit/ea284a7f96d01f6869686fe134a6892d6bb15184))
+* optimize user experience ([c85acfb](https://github.com/ksong008/daed/commit/c85acfb2a87cbcf67868308f13585268aad9f33f))
+* **parser:** add parser for dae language with AST and symbol information ([25b5fc2](https://github.com/ksong008/daed/commit/25b5fc27c51d80dc22b6bafe392476d4606cdce1))
+* re-trigger release-please ([c669866](https://github.com/ksong008/daed/commit/c669866b576a5978ebf38330f9a501a3164799a9))
+* trigger release ([a92a199](https://github.com/ksong008/daed/commit/a92a199dfdaba2184f2b4191e17e5005aaa65779))
+* **ui:** enhance layout and visual design system ([717102e](https://github.com/ksong008/daed/commit/717102e408f874c4a4564e9abd24363c7dccbb6e))
+* update pnpm workspace and add turbo configuration ([76cebb6](https://github.com/ksong008/daed/commit/76cebb6a1b75dac9bf09e264970f391e8e2bbbb3))
+* **web:** add dae config and backup file import flows ([00ac623](https://github.com/ksong008/daed/commit/00ac6238ce3ba719d0d3950a636c93fd7be8ffd0))
+* **web:** add node latency probe actions ([52e56f7](https://github.com/ksong008/daed/commit/52e56f7b768e73ab250bc1224783829276c6706c))
+* **web:** add regex-filtered group subscriptions ([42c8c64](https://github.com/ksong008/daed/commit/42c8c64c2973db5369fa3f04a3e0950ae3914b95))
+* **web:** add runtime memory overview cards ([53337ca](https://github.com/ksong008/daed/commit/53337ca6ad5df0bca1e29a697ee725d5350a3024))
+* **web:** add runtime traffic overview ([d00240d](https://github.com/ksong008/daed/commit/d00240dc3fc9cc6d77aa59ef89beb36a5ef5c4db))
+* **web:** compact group pickers and collapse groups ([a94f916](https://github.com/ksong008/daed/commit/a94f916ab451328417bf6321ee8e505f02a68b8b))
+* **web:** persist and refresh node latencies ([eadb233](https://github.com/ksong008/daed/commit/eadb233ddc8c05c1ada77c5a866440ba61ea1dbc))
+* **web:** show node latency in groups ([1efaff0](https://github.com/ksong008/daed/commit/1efaff099abbd0a973ae60ad4e4737000fdf4a80))
+* **web:** show node transport subtitles ([b9501f5](https://github.com/ksong008/daed/commit/b9501f537f228d0e2a11b7656af6937d773cfa69))
+* **web:** show transport across node displays ([9fa5761](https://github.com/ksong008/daed/commit/9fa57613342ce47959e2ad1adce71c80e99bf12f))
+* **web:** stream manual latency progress by batches ([03e8307](https://github.com/ksong008/daed/commit/03e83070974f9522d6d023d54c1b95b76d2c7bec))
+
+
+### Bug Fixes
+
+* align runtime controls and core hardening ([10510b1](https://github.com/ksong008/daed/commit/10510b19552c2ed2bc84f1ceebb1c32a7e5c83ac))
+* **dnd:** allow dragging subscription nodes into groups ([2c673cd](https://github.com/ksong008/daed/commit/2c673cdd290771f679ef66e3b410fad4f3327c75))
+* **dnd:** migrate to @hello-pangea/dnd and fix drag issues in modals ([3cb4c6b](https://github.com/ksong008/daed/commit/3cb4c6b8669616c2c02d942a5aae5bcb42d35b92))
+* **group:** avoid drag capture on delete ([f85b7a8](https://github.com/ksong008/daed/commit/f85b7a879031fe5356b784be37913492ea3295dc))
+* **init:** ensure default resources via atomic bootstrap ([c9d49f9](https://github.com/ksong008/daed/commit/c9d49f9605ae1c899a7655609ed577e61bd70569))
+* keep node card actions clickable ([93befb3](https://github.com/ksong008/daed/commit/93befb3e87fb525f70506df82167cbf5ba3badab))
+* **node:** refresh reload state after node update ([bfac0ea](https://github.com/ksong008/daed/commit/bfac0ea36c645139c2c1e6bfde9a67e1b4a2b92b))
+* **pr-677:** address review feedback ([d581cd9](https://github.com/ksong008/daed/commit/d581cd9882e0eb7dce5f765f89d67efdffea365a))
+* **reload:** guard panel reload actions ([857b540](https://github.com/ksong008/daed/commit/857b540c647fdaebebedacf1cd7eb9fccf534cc1))
+* **reload:** surface stalled runtime requests ([437b899](https://github.com/ksong008/daed/commit/437b8995871ff975315917e54391aa35e892ed50))
+* **reload:** unblock web startup and clean debug traces ([ed1d3c0](https://github.com/ksong008/daed/commit/ed1d3c088862a8a031941368568bdf96f31bcbc0))
+* remove rolldownOptions from build configuration ([23f4ba5](https://github.com/ksong008/daed/commit/23f4ba58df3925eaa47484afaebdba9a92be6eb4))
+* resolve CI failures from dependency upgrade breakages ([c992158](https://github.com/ksong008/daed/commit/c99215884c66206c2df0ea99fbb480f0066095be))
+* **runtime:** tighten UI state and show 2.0 ([19dea6a](https://github.com/ksong008/daed/commit/19dea6aa7ec7d279856dc187959b9f22d9a62928))
+* **runtime:** trim UI state and pull backend cache fixes ([b12df2e](https://github.com/ksong008/daed/commit/b12df2e0230380bf4885f83d2283895178279af7))
+* **setup:** canonicalize legacy graphql endpoints ([a3943b0](https://github.com/ksong008/daed/commit/a3943b00e5c17887fa11937de5264ad7dfb3d6b5))
+* **subscription:** avoid drag capture on delete ([301728f](https://github.com/ksong008/daed/commit/301728fd92a364813817a97305b62733b68d3b0a))
+* **ui:** fix scrolling issue of multi-select component ([#726](https://github.com/ksong008/daed/issues/726)) ([09784e3](https://github.com/ksong008/daed/commit/09784e3636e3f69fddb2f37dead35aadda57115f))
+* **vless:** omit placeholder flow in xhttp links ([fa3470c](https://github.com/ksong008/daed/commit/fa3470c8d3509aeffafa0f9c784a889b3c80f8ec))
+* **web:** address regex group subscription review feedback ([09a32ff](https://github.com/ksong008/daed/commit/09a32ff1191d2f147e10041362bfef8ef44ec24e))
+* **web:** align dae config warning preview types ([aa60a9a](https://github.com/ksong008/daed/commit/aa60a9a1bbef8a2b952a28aeedea8b5c92b81a56))
+* **web:** align traffic charts to bottom ([c83602b](https://github.com/ksong008/daed/commit/c83602b4e09c5a0e028eadd76d2d01c36b06551c))
+* **web:** default traffic overview to 1 minute ([f40dbef](https://github.com/ksong008/daed/commit/f40dbef3a622d84a5b0d8bd0ebc7f93cdd05e91b))
+* **web:** drop unused GroupAddNodes variable ([2feb58b](https://github.com/ksong008/daed/commit/2feb58bad53c3061a508d1032689d7874f6c63a6))
+* **web:** equalize traffic overview columns ([664b7ee](https://github.com/ksong008/daed/commit/664b7eebfa122c123611cc96001561fa3657d0e4))
+* **web:** exclude config name from parsed global input ([6a63bac](https://github.com/ksong008/daed/commit/6a63baceecb94dbb89eacaab32e0cd4c6ce29f36))
+* **web:** guard nullable interface data ([5fe881f](https://github.com/ksong008/daed/commit/5fe881fc6ee0ca7fc46ab7749a3ff7732bf2bdee))
+* **web:** highlight latency in group picker ([e18c89e](https://github.com/ksong008/daed/commit/e18c89efe1b0ca707c9aae3fe992f9e63607266a))
+* **web:** include subscription nodes in manual latency tests ([7f34aa5](https://github.com/ksong008/daed/commit/7f34aa5615176e9c37eeffbc1eed00dd62ecba2e))
+* **web:** keep latency batch progress responsive ([f27d69d](https://github.com/ksong008/daed/commit/f27d69d04da02a1ae2c3d6e00d58d1db59f6e26d))
+* **web:** make traffic updates more responsive ([03617ac](https://github.com/ksong008/daed/commit/03617ac43450797d247b0500fb72ae666b0bb4ee))
+* **web:** normalize parsed config globals ([f680513](https://github.com/ksong008/daed/commit/f680513b7ea9bf390cfe26c3020c727cf60229ff))
+* **web:** refine traffic overview timeline and layout ([4df2550](https://github.com/ksong008/daed/commit/4df25507a755bf7577b8d99684d4ebdd45287219))
+* **web:** reset edit node modal tab state ([98139c2](https://github.com/ksong008/daed/commit/98139c23a6552d071835a2724a68184fc8c69c95))
+* **web:** restore group drag handle ([cfb7a6e](https://github.com/ksong008/daed/commit/cfb7a6e44b034f048d8be874006753324d9761d0))
+* **web:** return node import results ([9251648](https://github.com/ksong008/daed/commit/925164811fcd02bd40a216fc1bcf97a9da6fce3a))
+* **web:** show tcp-only manual latency probe notes ([af1821b](https://github.com/ksong008/daed/commit/af1821b198985403411db7ac1185fcbcd6ae7e04))
+* **web:** speed up edge drag scrolling ([5b7ac27](https://github.com/ksong008/daed/commit/5b7ac27737f1216afe4b87ca1f1f299461219ae8))
+* **web:** stabilize group drag and sorting ([b155589](https://github.com/ksong008/daed/commit/b1555894e77099b59a69354fb76c2047c7dc0387))
+* **web:** surface node import errors ([e34d54d](https://github.com/ksong008/daed/commit/e34d54d4b7eb46b0dd5a9258cb240f9fe2dda50a))
+* 节点行域名过长时删除按钮被挤出可视区域 ([ff21261](https://github.com/ksong008/daed/commit/ff2126166005ab14ba725f1d79699b950b52b137))
+
+
+### Performance Improvements
+
+* **web:** defer heavy startup work ([f51bcfb](https://github.com/ksong008/daed/commit/f51bcfbe8a3928f04b8fa47444b1d1ed536f6f57))
+
 ## [1.26.0](https://github.com/daeuniverse/daed/compare/v1.25.1...v1.26.0) (2026-03-31)
 
 
