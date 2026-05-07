@@ -2,7 +2,7 @@ OUTPUT ?= daed
 APPNAME ?= daed
 VERSION ?= 0.0.0.unknown
 
-.PHONY: submodules submodule
+.PHONY: submodules submodule rust-upstream-gate-local
 
 daed:
 
@@ -62,3 +62,9 @@ daed: submodule $(DAE_WING_READY) dist
 	cd wing && \
 	$(MAKE) OUTPUT=../$(OUTPUT) APPNAME=$(APPNAME) WEB_DIST=../dist VERSION=$(VERSION) bundle
 ## End Bundle
+
+rust-upstream-gate-local:
+	PATH=/root/.local/go1.25.9/bin:$$PATH $(MAKE) -C wing rust-upstream-gate-local
+	pnpm check-types
+	PATH=/root/.local/go1.25.9/bin:$$PATH $(MAKE) PFLAGS=HUSKY=0 OUTPUT=/tmp/daedrust-gate APPNAME=daedrust VERSION=local-rust-gate daed
+	rm -f /tmp/daedrust-gate

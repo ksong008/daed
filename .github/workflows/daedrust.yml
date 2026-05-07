@@ -1,0 +1,79 @@
+name: daedrust
+
+on:
+  push:
+    branches:
+      - daedrust
+  pull_request:
+    branches:
+      - daedrust
+  workflow_dispatch:
+
+permissions: read-all
+
+env:
+  FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: 'true'
+
+concurrency:
+  group: daedrust-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  upstream-gate:
+    runs-on: ubuntu-22.04
+    timeout-minutes: 60
+
+    steps:
+      - name: Checkout daed
+        uses: actions/checkout@v6
+        with:
+          fetch-depth: 0
+          submodules: recursive
+          path: daed
+
+      - name: Checkout dae
+        uses: actions/checkout@v5
+        with:
+          repository: ksong008/dae
+          ref: daerust
+          fetch-depth: 0
+          submodules: recursive
+          path: dae
+
+      - name: Set up pnpm
+        uses: pnpm/action-setup@v5.0.0
+
+      - name: Set up Node
+        uses: actions/setup-node@v6
+        with:
+          node-version: '22.12.0'
+          cache: pnpm
+          cache-dependency-path: |
+            daed/pnpm-lock.yaml
+
+      - name: Set up Go
+        uses: actions/setup-go@v6
+        with:
+          go-version: '1.25.9'
+          cache-dependency-path: |
+            daed/wing/go.mod
+            daed/wing/go.sum
+            dae/go.mod
+            dae/go.sum
+
+      - name: Install dependencies
+        run: |
+          sudo apt-get update -y
+          sudo apt-get install -y clang-15 llvm-15
+
+      - name: Install web dependencies
+        working-directory: daed
+        run: pnpm install --frozen-lockfile
+
+      - name: Run daedrust gate
+        working-directory: daed
+        env:
+          GOFLAGS: -mod=mod -modcacherw
+          GOPROXY: https://goproxy.cn,direct
+          GOSUMDB: sum.golang.google.cn
+        run: make rust-upstream-gate-local
