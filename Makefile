@@ -70,6 +70,6 @@ rust-upstream-gate-local:
 	trap 'cp "$$tmp_go_mod" wing/go.mod; rm -f "$$tmp_go_mod" /tmp/daedrust-gate' EXIT; \
 	sed 's#=> ../dae#=> ../../dae#' "$$tmp_go_mod" > wing/go.mod; \
 	PATH=/root/.local/go1.25.9/bin:$$PATH $(MAKE) -C ../dae ebpf; \
-	PATH=/root/.local/go1.25.9/bin:$$PATH $(MAKE) -C wing rust-upstream-gate-local; \
+	PATH=/root/.local/go1.25.9/bin:$$PATH $(MAKE) -C wing DAE_REPO_DIR=../../dae rust-upstream-gate-local; \
 	pnpm check-types; \
 	PATH=/root/.local/go1.25.9/bin:$$PATH $(MAKE) PFLAGS=HUSKY=0 OUTPUT=/tmp/daedrust-gate APPNAME=daedrust VERSION=local-rust-gate daed
