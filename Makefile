@@ -64,7 +64,12 @@ daed: submodule $(DAE_WING_READY) dist
 ## End Bundle
 
 rust-upstream-gate-local:
-	PATH=/root/.local/go1.25.9/bin:$$PATH $(MAKE) -C wing rust-upstream-gate-local
-	pnpm check-types
+	@set -e; \
+	tmp_go_mod=$$(mktemp); \
+	cp wing/go.mod "$$tmp_go_mod"; \
+	trap 'cp "$$tmp_go_mod" wing/go.mod; rm -f "$$tmp_go_mod" /tmp/daedrust-gate' EXIT; \
+	sed 's#=> ../dae#=> ../../dae#' "$$tmp_go_mod" > wing/go.mod; \
+	PATH=/root/.local/go1.25.9/bin:$$PATH $(MAKE) -C ../dae ebpf; \
+	PATH=/root/.local/go1.25.9/bin:$$PATH $(MAKE) -C wing rust-upstream-gate-local; \
+	pnpm check-types; \
 	PATH=/root/.local/go1.25.9/bin:$$PATH $(MAKE) PFLAGS=HUSKY=0 OUTPUT=/tmp/daedrust-gate APPNAME=daedrust VERSION=local-rust-gate daed
-	rm -f /tmp/daedrust-gate
