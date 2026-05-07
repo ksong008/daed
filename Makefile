@@ -72,4 +72,5 @@ rust-upstream-gate-local:
 	PATH=/root/.local/go1.25.9/bin:$$PATH $(MAKE) -C ../dae ebpf; \
 	PATH=/root/.local/go1.25.9/bin:$$PATH $(MAKE) -C wing DAE_REPO_DIR=../../dae rust-upstream-gate-local; \
 	pnpm check-types; \
-	PATH=/root/.local/go1.25.9/bin:$$PATH $(MAKE) PFLAGS=HUSKY=0 OUTPUT=/tmp/daedrust-gate APPNAME=daedrust VERSION=local-rust-gate daed
+	: "Preserve the overlaid live wing checkout during promotion-style gating."; \
+	PATH=/root/.local/go1.25.9/bin:$$PATH $(MAKE) SKIP_SUBMODULES=1 PFLAGS=HUSKY=0 OUTPUT=/tmp/daedrust-gate APPNAME=daedrust VERSION=local-rust-gate daed
