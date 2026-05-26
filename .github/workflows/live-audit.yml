@@ -12,9 +12,25 @@ jobs:
       contents: read
 
     steps:
-      - uses: actions/checkout@v6
-        with:
-          submodules: recursive
+      - name: Checkout repository without token
+        env:
+          REPOSITORY: ${{ github.repository }}
+          REF: ${{ github.ref }}
+          PR_NUMBER: ${{ github.event.pull_request.number }}
+        run: |
+          set -euo pipefail
+          git config --global url.https://github.com/.insteadOf git@github.com:
+          git init .
+          git remote add origin "https://github.com/${REPOSITORY}.git"
+          if [ -n "${PR_NUMBER}" ]; then
+            git fetch --no-tags --prune origin "+refs/pull/${PR_NUMBER}/merge:refs/remotes/pull/${PR_NUMBER}/merge"
+            git checkout --detach "refs/remotes/pull/${PR_NUMBER}/merge"
+          else
+            git fetch --no-tags --prune origin "+${REF}:${REF}"
+            git checkout --detach "${REF}"
+          fi
+          git submodule sync --recursive
+          git submodule update --init --recursive
 
       - uses: pnpm/action-setup@v5.0.0
 
