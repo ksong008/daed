@@ -9,6 +9,7 @@ import type {
 import { CloudCog, Map as MapIcon, Pencil, Settings } from 'lucide-react'
 import { useTranslation } from 'react-i18next'
 
+import { Policy } from '~/apis/types'
 import { NodeProtocolBadge } from '~/components/NodeProtocolBadge'
 import { Badge } from '~/components/ui/badge'
 import { Button } from '~/components/ui/button'
@@ -51,6 +52,12 @@ interface SummaryNodeIdentity {
 interface SummaryDestination extends SummaryNodeIdentity {
   subtitle: string
   tooltipNodes?: SummaryNodeIdentity[]
+}
+
+interface SummaryNodeCandidate {
+  node: NodeResource
+  subtitle: string
+  latencyMs?: number
 }
 
 function SummaryShell({
@@ -386,6 +393,10 @@ function formatLatencyLabel(result?: NodeLatencyProbeResult) {
   return `${result.latencyMs} ms`
 }
 
+function getFiniteLatencyMs(result?: NodeLatencyProbeResult) {
+  return typeof result?.latencyMs === 'number' && Number.isFinite(result.latencyMs) ? result.latencyMs : undefined
+}
+
 function formatBestLatencyLabel(nodes: NodeResource[], nodeLatencies?: Record<string, NodeLatencyProbeResult>) {
   const latencies = nodes
     .map((node) => nodeLatencies?.[node.id]?.latencyMs)
@@ -406,6 +417,29 @@ function getNodeIdentity(node: NodeResource): SummaryNodeIdentity {
     protocol: node.protocol || undefined,
     transport: node.transport || undefined,
   }
+}
+
+function buildNodeDestination(node: NodeResource, subtitle: string): SummaryDestination {
+  return {
+    ...getNodeIdentity(node),
+    subtitle,
+  }
+}
+
+function selectLowestLatencyCandidate(candidates: SummaryNodeCandidate[]) {
+  let selected: SummaryNodeCandidate | undefined
+  let selectedLatencyMs = Number.POSITIVE_INFINITY
+
+  for (const candidate of candidates) {
+    const latencyMs = candidate.latencyMs
+    if (typeof latencyMs !== 'number') continue
+    if (latencyMs < selectedLatencyMs) {
+      selected = candidate
+      selectedLatencyMs = latencyMs
+    }
+  }
+
+  return selected
 }
 
 function formatInterfaceSummary(items: Array<{ name: string; address?: string }>) {
@@ -507,6 +541,40 @@ export function WorkspaceSummaryCards({
       : undefined
     const subscriptionBinding = group.subscriptions[0]
     const subscriptionNodes = subscriptionBinding?.matchedNodes ?? []
+    const latencyCandidates: SummaryNodeCandidate[] = []
+    const seenNodeIds = new Set<string>()
+    const pushLatencyCandidate = (node: NodeResource, subtitle: string) => {
+      if (seenNodeIds.has(node.id)) return
+      seenNodeIds.add(node.id)
+      latencyCandidates.push({
+        node,
+        subtitle,
+        latencyMs: getFiniteLatencyMs(nodeLatencies?.[node.id]),
+      })
+    }
+
+    for (const node of group.nodes) {
+      const subscriptionName = node.subscriptionID ? subscriptionNameById.get(node.subscriptionID) : undefined
+      pushLatencyCandidate(
+        node,
+        node.subscriptionID
+          ? [t('workspaceSummary.fromSubscription'), subscriptionName].filter(Boolean).join(' · ')
+          : t('workspaceSummary.manualNode'),
+      )
+    }
+
+    for (const binding of group.subscriptions) {
+      const subscriptionName = binding.subscription.tag || binding.subscription.link
+      const subscriptionSubtitle = [t('workspaceSummary.fromSubscription'), subscriptionName]
+        .filter(Boolean)
+        .join(' · ')
+      for (const node of binding.matchedNodes) {
+        pushLatencyCandidate(node, subscriptionSubtitle)
+      }
+    }
+
+    const selectedLatencyCandidate =
+      group.policy === Policy.Min ? selectLowestLatencyCandidate(latencyCandidates) : undefined
     const destination = directNode
       ? {
           ...getNodeIdentity(directNode),
@@ -523,6 +591,14 @@ export function WorkspaceSummaryCards({
             tooltipNodes: subscriptionNodes.map(getNodeIdentity),
           }
         : undefined
+
+    if (selectedLatencyCandidate) {
+      return {
+        group,
+        destination: buildNodeDestination(selectedLatencyCandidate.node, selectedLatencyCandidate.subtitle),
+        latencyLabel: `${selectedLatencyCandidate.latencyMs} ms`,
+      }
+    }
 
     return {
       group,
